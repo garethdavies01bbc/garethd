@@ -12,16 +12,16 @@ object Offline
   case class DoesContain(domain: Boolean, predicate: Boolean)
   case class Count(domain:Int, predicate: Int)
 
-  def completeness(c:Count): Double = c.predicate.toDouble / c.domain.toDouble * 100
+  def completeness(c:Count): Double = (c.predicate.toDouble / c.domain.toDouble) * 100
 
   def myCount(l: List[(String, DoesContain)]): (Int, Int) = {
     l.map(_._2).
-    foldLeft((0, 0)) {
-      case ((accDCount, accPc), lc) =>
-        val incDCount = if (lc.domain) 1 else 0
-        val incPCount = if (lc.predicate) 1 else 0
-        (accDCount + incDCount, accPc + incPCount)
-    }
+      foldLeft((0, 0)) {
+        case ((accDCount, accPc), lc) =>
+          val incDCount = if (lc.domain) 1 else 0
+          val incPCount = if (lc.predicate) 1 else 0
+          (accDCount + incDCount, accPc + incPCount)
+      }
   }
 
   def valuesMatch(a: String, b: String, l: String): (Boolean, Boolean) = (l.contains(a), l.contains(b))
@@ -41,8 +41,10 @@ object Offline
       }).groupBy(_._1)
 
   def results(data: Map[String, List[(String, DoesContain)]]): Map[String, Double] = {
-    data.transform((_, countValues) =>
-      completeness(Count(domain = myCount(countValues)._1, predicate = myCount(countValues)._2)))
+    data.transform((_, countValues) => {
+      val (domainCount, predicateCount) = myCount(countValues)
+      completeness(Count(domainCount, predicateCount))
+    })
   }
 
   def tidyResults(results:Map[String, Double]): Map[String, String] = results.map {
@@ -80,6 +82,7 @@ object Offline
   {
     val domain = args(0)
     val filename = "/Users/davieg01/Documents/intended/passportsTest.json"
+
     val predicateData = Offline.predicateData(filename, domain)
     val results = Offline.results(predicateData)
     val tidyResults = Offline.tidyResults(results)
