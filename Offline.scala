@@ -21,13 +21,12 @@ object Offline
 
   def completeness(c:Count): Double = (c.predicate.toDouble / c.domain.toDouble) * 100
 
-  def myCount(l: List[(String, DoesContain)]): (Int, Int) = {
+  def inc(x: Boolean) = if (x) 1 else 0
+
+  def myCount(l: List[(String, DoesContain)]): Count = {
     l.map(_._2).
-      foldLeft((0, 0)) {
-        case ((accDCount, accPc), lc) =>
-          val incDCount = if (lc.domain) 1 else 0
-          val incPCount = if (lc.predicate) 1 else 0
-          (accDCount + incDCount, accPc + incPCount)
+      foldLeft(Count(0, 0)) {
+        case (Count(d, p), lc) => Count(d + inc(lc.domain), p + inc(lc.predicate))
       }
   }
 
@@ -49,8 +48,7 @@ object Offline
 
   def results(data: Map[String, List[(String, DoesContain)]]): Map[String, Double] = {
     data.transform((_, countValues) => {
-      val (domainCount, predicateCount) = myCount(countValues)
-      completeness(Count(domainCount, predicateCount))
+      completeness(myCount(countValues))
     })
   }
 
