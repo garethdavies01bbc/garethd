@@ -78,10 +78,10 @@ object Offline
 
   def main(args: Array[String])
   {
-    val domain =  args(0)
+    val domain = args(0)
     val filename = "/Users/davieg01/Documents/intended/passportsTest.json"
-    val predicateData: Map[String, List[(String, DoesContain)]] = Offline.predicateData(filename, domain)
-    val results: Map[String, Double] = Offline.results(predicateData)
+    val predicateData = Offline.predicateData(filename, domain)
+    val results = Offline.results(predicateData)
     val tidyResults = Offline.tidyResults(results)
 
     println(s"\nCompleteness for $domain")
