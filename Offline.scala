@@ -46,11 +46,8 @@ object Offline
         (acc, predicate) => acc + (predicate._2 -> lineSummary(domain, predicate._2, line))
       }).groupBy(_._1)
 
-  def results(data: Map[String, List[(String, DoesContain)]]): Map[String, Double] = {
-    data.transform((_, countValues) => {
-      completeness(myCount(countValues))
-    })
-  }
+  def results(data: Map[String, List[(String, DoesContain)]]): Map[String, Double] =
+    data.transform((_, countValues) => completeness(myCount(countValues)))
 
   def tidyResults(results:Map[String, Double]): Map[String, String] = results.map {
     case (key, value) =>
