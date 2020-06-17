@@ -6,7 +6,14 @@ object Offline
     "MENTIONS" -> "http://www.bbc.co.uk/ontologies/creativework/mentions",
     "EDITORIAL_SENSITIVITY" -> "http://www.bbc.co.uk/ontologies/coreconcepts/editorialSensitivity",
     "ABOUT" -> "http://www.bbc.co.uk/ontologies/passport/predicate/About",
-    "EDITORIAL_TONE" -> "http://www.bbc.co.uk/ontologies/coreconcepts/editorialTone"
+    "EDITORIAL_TONE" -> "http://www.bbc.co.uk/ontologies/coreconcepts/editorialTone",
+    "RELEVANT_TO" -> "http://www.bbc.co.uk/ontologies/bbc/relevantTo",
+    "EDITORIAL_TONE" -> "http://www.bbc.co.uk/ontologies/coreconcepts/editorialTone",
+    "GENRE" -> "http://www.bbc.co.uk/ontologies/bbc/genre",
+    "LANGUAGE" -> "http://www.bbc.co.uk/ontologies/coreconcepts/language",
+    "FORMAT" -> "http://www.bbc.co.uk/ontologies/cwork/format",
+    "CONTRIBUTOR" -> "contributor",
+    "AUDIENCE" -> "audience",
   )
 
   case class DoesContain(domain: Boolean, predicate: Boolean)
